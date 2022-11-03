@@ -67,6 +67,11 @@ typedef struct
 
 void setComponent(ComponentRegistry* reg, int32_t EntityID, ComponentList component)
 {
+    if (reg->entityComponentCount[EntityID] >= MAX_COMPONENTS)
+    {
+        printf("Entity ID %d has maximum amount of components!", EntityID);
+        return;
+    }
     reg->entityComponentCount[EntityID] += 1;
     uint32_t i = reg->entityComponentCount[EntityID];
     reg->componentArray[EntityID][i] = component;
