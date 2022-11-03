@@ -1,0 +1,13 @@
+
+			Entity Component System
+
+entity = int32_t id
+component = plain data structs
+systems work on components
+
+
+entities have components "attached" to them trough component registry
+systems loop trough each entities components sequentially
+make it cache friendly somehow (how?)
+
+
