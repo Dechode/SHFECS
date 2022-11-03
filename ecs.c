@@ -73,7 +73,7 @@ typedef struct
 
 } ComponentRegistry;
 
-void setComponent(ComponentRegistry* reg, int32_t EntityID, Component component)
+void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component component)
 {
     if (reg->entityComponentCount[EntityID] >= MAX_COMPONENTS)
     {
