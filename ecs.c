@@ -15,7 +15,7 @@ void initEntities(void)
 {
     for (int32_t i = 0; i < MAX_ENTITIES; i++)
     { 
-        availableEntityArr[i] = -1;
+        availableEntityArr[i] = i;
         entities[i] = -1;
     }
 }
@@ -77,7 +77,7 @@ void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component compone
 {
     if (reg->entityComponentCount[EntityID] >= MAX_COMPONENTS)
     {
-        printf("Entity ID %d has already reached maximum amount of components!", EntityID);
+        printf("Entity ID %d has already reached maximum amount of components!\n", EntityID);
         return;
     }
     uint32_t i = reg->entityComponentCount[EntityID]++;
