@@ -75,13 +75,13 @@ typedef struct
 
 void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component component)
 {
-    if (reg->entityComponentCount[EntityID] >= MAX_COMPONENTS)
+    uint32_t componentID = reg->entityComponentCount[EntityID]++;
+    if (componentID >= MAX_COMPONENTS)
     {
         printf("Entity ID %d has already reached maximum amount of components!\n", EntityID);
         return;
     }
-    uint32_t i = reg->entityComponentCount[EntityID]++;
-    reg->componentArray[EntityID][i] = component;
+    reg->componentArray[EntityID][componentID] = component;
 }
 
 void positionSystemUpdate(void)
