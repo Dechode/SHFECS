@@ -75,6 +75,11 @@ typedef struct
 
 void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component component)
 {
+    if (EntityID < 0)
+    {
+        puts("EntityID below 0!");
+        return;
+    }
     uint32_t componentID = reg->entityComponentCount[EntityID]++;
     if (componentID >= MAX_COMPONENTS)
     {
@@ -104,10 +109,15 @@ int main(int argc, char* argv[])
 
     removeEntity(420);
     count = getAvailableEntities();
+    puts("Removed entity 420");
 
     printf("Available entity count = %d\n", count);
     printf("First available entity id = %d\n", availableEntityArr[0]);
     printf("Current entity count = %d\n", entityCount);
 
+    ComponentRegistry compReg;
+    compReg.posComponentCount = 0;
+    attachComponent(&compReg, 421, VEL_COMPONENT);
+    printf("421 component = %d\n", compReg.componentArray[421][0]);
     return 0;
 }
