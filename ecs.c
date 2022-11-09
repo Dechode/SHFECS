@@ -24,7 +24,7 @@ int32_t createEntity(void)
 {
     if (entityCount >= MAX_ENTITIES)
     {
-        puts("Cant create more entities!");
+        puts("Error: Cant create more entities!");
         return -1;
     }
     return entityCount++;
@@ -77,13 +77,13 @@ void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component compone
 {
     if (EntityID < 0)
     {
-        puts("EntityID below 0!");
+        puts("Error: EntityID below 0!");
         return;
     }
     uint32_t componentID = reg->entityComponentCount[EntityID]++;
     if (componentID >= MAX_COMPONENTS)
     {
-        printf("Entity ID %d has already reached maximum amount of components!\n", EntityID);
+        printf("Error: Entity ID %d has already reached maximum amount of components!\n", EntityID);
         return;
     }
     reg->componentArray[EntityID][componentID] = component;
