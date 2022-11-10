@@ -11,6 +11,9 @@ static int32_t availableEntityCount;
 static int32_t entities[MAX_ENTITIES];
 static int32_t availableEntityArr[MAX_ENTITIES];
 
+static uint32_t componentArray[MAX_ENTITIES][MAX_COMPONENTS];
+static uint32_t entityComponentCount[MAX_ENTITIES];
+
 void initEntities(void)
 {
     for (int32_t i = 0; i < MAX_ENTITIES; i++)
@@ -24,7 +27,7 @@ int32_t createEntity(void)
 {
     if (entityCount >= MAX_ENTITIES)
     {
-        puts("Cant create more entities!");
+        puts("Error: Cant create more entities!");
         return -1;
     }
     return entityCount++;
@@ -64,42 +67,31 @@ typedef struct
     float x, y;
 } PositionComponent;
 
-typedef struct
-{
-    uint32_t componentArray[MAX_ENTITIES][MAX_COMPONENTS];
-    uint32_t entityComponentCount[MAX_ENTITIES];
-    PositionComponent posComponents[100];
-    uint32_t posComponentCount;
-
-} ComponentRegistry;
-
-void attachComponent(ComponentRegistry* reg, int32_t EntityID, Component component)
+void attachComponent(int32_t EntityID, Component component)
 {
     if (EntityID < 0)
     {
-        puts("EntityID below 0!");
+        puts("Error: EntityID below 0!");
         return;
     }
-    uint32_t componentID = reg->entityComponentCount[EntityID]++;
+    uint32_t componentID = entityComponentCount[EntityID]++;
+    printf("ComponentID = %d\n",componentID);
     if (componentID >= MAX_COMPONENTS)
     {
-        printf("Entity ID %d has already reached maximum amount of components!\n", EntityID);
+        printf("Error: Entity ID %d has already reached maximum amount of components!\n", EntityID);
         return;
     }
-    reg->componentArray[EntityID][componentID] = component;
-}
-
-void positionSystemUpdate(void)
-{
+    componentArray[EntityID][componentID] = component;
 }
 
 int main(int argc, char* argv[])
 {
     initEntities();
 
-    for (int i = 0; i < MAX_ENTITIES ; i++)
+    for (int32_t i = 0; i < MAX_ENTITIES ; i++)
     {
-       entities[i] = createEntity();
+        entities[i] = createEntity();
+        entityComponentCount[i] = 0;
     }
 
     int32_t count = getAvailableEntities();
@@ -107,17 +99,15 @@ int main(int argc, char* argv[])
     printf("Available entity count = %d\n", count);
     printf("Current entity count = %d\n", entityCount);
 
-    removeEntity(420);
+    removeEntity(2);
     count = getAvailableEntities();
-    puts("Removed entity 420");
+    puts("Removed entity 2");
 
     printf("Available entity count = %d\n", count);
     printf("First available entity id = %d\n", availableEntityArr[0]);
     printf("Current entity count = %d\n", entityCount);
 
-    ComponentRegistry compReg;
-    compReg.posComponentCount = 0;
-    attachComponent(&compReg, 421, VEL_COMPONENT);
-    printf("421 component = %d\n", compReg.componentArray[421][0]);
+    attachComponent(421, VEL_COMPONENT);
+    printf("421 component = %d\n", componentArray[421][0]);
     return 0;
 }
